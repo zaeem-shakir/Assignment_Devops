@@ -35,7 +35,7 @@ jobs:
           command: |
             export NVM_DIR=/home/ubuntu/.nvm
             source /home/ubuntu/.nvm/nvm.sh
-            cd /home/ubuntu/dev_ass_2/devop_testapp/
+            cd /home/ubuntu/assignment2/testapp
             git pull origin main
             npm run dev
 
