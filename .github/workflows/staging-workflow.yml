@@ -1,0 +1,48 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14' # or use your desired Node.js version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Unit Testing
+        run: npm test
+
+      - name: Code Analysis/Linting
+        run: npm run lint
+
+      - name: Deploy to AWS Staging Server
+        run: |
+          # Replace the following commands with your deployment scripts to AWS staging server
+          # Ensure proper permissions and configurations for deployment
+          echo "Deploying to AWS Staging Server..."
+          ssh -i ~/CS423_Assignment2/KeyPair-EC2-2.pem ec2-user@13.53.125.195 'cd ~/CS423_Assignment2 && ./deploy.sh'
+
+      - name: Notify on Deployment Success
+        if: success()
+        run: |
+          # Replace with email notification command to notify team members about successful deployment
+
+      - name: Notify on Deployment Failure
+        if: failure()
+        run: |
+          # Replace with email notification command to notify developer and team about workflow failure
