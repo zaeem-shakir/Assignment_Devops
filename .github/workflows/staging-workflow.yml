@@ -26,23 +26,18 @@ jobs:
 
       - name: Unit Testing
         run: npm test
+        
+      - name: Deploying Staging Server
+        uses: JimCronqvist/action-ssh@master
+        with:
+          hosts: 'ubuntu@51.20.141.130'
+          privatekey: ${{secrets.EC2_ACCESS_KEY}}
+          command: |
+            export NVM_DIR=/home/ubuntu/.nvm
+            source /home/ubuntu/.nvm/nvm.sh
+            cd /home/ubuntu/dev_ass_2/devop_testapp/
+            git pull origin main
+            npm run dev
 
-      - name: Code Analysis/Linting
-        run: npm run lint
 
-      - name: Deploy to AWS Staging Server
-        run: |
-          # Replace the following commands with your deployment scripts to AWS staging server
-          # Ensure proper permissions and configurations for deployment
-          echo "Deploying to AWS Staging Server..."
-          ssh -i ~/CS423_Assignment2/KeyPair-EC2-2.pem ec2-user@13.53.125.195 'cd ~/CS423_Assignment2 && ./deploy.sh'
-
-      - name: Notify on Deployment Success
-        if: success()
-        run: |
-          # Replace with email notification command to notify team members about successful deployment
-
-      - name: Notify on Deployment Failure
-        if: failure()
-        run: |
-          # Replace with email notification command to notify developer and team about workflow failure
+            
